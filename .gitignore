@@ -1,0 +1,26 @@
+# --- Nix ---
+result
+result-*
+.direnv/
+.pre-commit-config.yaml
+
+# --- npm (paso de activación de Claude Code / OpenCode / Codex CLI) ---
+node_modules/
+npm-debug.log*
+.npm-global/
+
+# --- Editores ---
+.vscode/
+*.swp
+*.swo
+*~
+
+# --- SO ---
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# --- Secretos / locales (por si alguna vez agregas algo así) ---
+.env
+.env.local
+*.local.nix
