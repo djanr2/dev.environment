@@ -1,8 +1,8 @@
 { pkgs, lib, ... }:
 {
   home.stateVersion = "24.05";
-  home.username = "tuusuario";
-  home.homeDirectory = "/home/tuusuario";
+  home.username = "djanr2";
+  home.homeDirectory = "/home/djanr2";
 
   # ---------------------------------------------------------------
   # Paquetes base del ambiente
@@ -41,10 +41,12 @@
     coreutils
 
     # --- Fuente de desarrollo ---
-    # nerd-fonts.caskaydia-cove no existe en nixos-24.05 (llegó a nixpkgs
-    # a mediados de 2025). En esta revisión el paquete es el monolítico
-    # `nerdfonts` con override de fuentes; el nombre interno es "CascadiaCode".
-    (nerdfonts.override { fonts = [ "CascadiaCode" ]; })
+    # Hack Nerd Font — la misma que ya usas en Windows con starship.
+    # nerd-fonts.caskaydia-cove/hack no existen como paquetes separados en
+    # nixos-24.05 (esa reestructuración llegó a nixpkgs a mediados de 2025);
+    # en esta revisión es el monolítico `nerdfonts` con override de fuentes.
+    # "Hack" verificado en pkgs/data/fonts/nerdfonts/shas.nix de nixos-24.05.
+    (nerdfonts.override { fonts = [ "Hack" ]; })
 
     # --- Node (runtime para herramientas de IA vía npm, ver activation abajo) ---
     nodejs_22
@@ -81,8 +83,8 @@
   # ---------------------------------------------------------------
   programs.git = {
     enable = true;
-    userName = "Tu Nombre";
-    userEmail = "tu@email.com";
+    userName = "Juan Alfredo Nunez Rodriguez";
+    userEmail = "djanr2@gmail.com";
     extraConfig = {
       init.defaultBranch = "main";
       merge.tool = "vscode";

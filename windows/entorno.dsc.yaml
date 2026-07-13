@@ -13,13 +13,11 @@ properties:
         source: winget
 
     # --- Fuente para terminal ---
-    # PENDIENTE: se quitó el WinGetPackage de Cascadia Code Nerd Font.
-    # No se encontró un id de winget confirmado (ni DEVCOM.CascadiaCodeNerdFont
-    # ni DEVCOM.CaskaydiaCoveNerdFont existen en el repositorio de winget-pkgs,
-    # y nerdfonts.com no lista winget como canal de distribución oficial).
-    # Instalar manualmente por ahora: https://www.nerdfonts.com/font-downloads
-    # (CaskaydiaCove) o correr `winget search "nerd font"` para confirmar un id
-    # válido y volver a agregar este resource.
+    # No se agrega como WinGetPackage: ya tienes Hack Nerd Font instalada en
+    # Windows (la usas con starship). El lado WSL usa la misma fuente vía Nix
+    # (ver wsl-nix/home.nix). Si en algún momento reinstalas Windows desde
+    # cero, corre `winget search "hack nerd font"` para confirmar un id o
+    # instálala manualmente desde https://www.nerdfonts.com/font-downloads.
 
     # --- Navegador ---
     - resource: Microsoft.WinGet.DSC/WinGetPackage
