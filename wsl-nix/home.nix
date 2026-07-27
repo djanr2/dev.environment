@@ -66,11 +66,11 @@
   # Register fish in /etc/shells and set it as the login shell
   home.activation.setFishAsDefaultShell = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
     FISH="${pkgs.fish}/bin/fish"
-    if ! grep -qF "$FISH" /etc/shells 2>/dev/null; then
-      echo "$FISH" | sudo tee -a /etc/shells >/dev/null
+    if ! /usr/bin/grep -qF "$FISH" /etc/shells 2>/dev/null; then
+      echo "$FISH" | /usr/bin/sudo /usr/bin/tee -a /etc/shells >/dev/null
     fi
     if [ "$SHELL" != "$FISH" ]; then
-      sudo chsh -s "$FISH" "$USER"
+      /usr/bin/sudo /usr/bin/chsh -s "$FISH" "$USER"
     fi
   '';
 
