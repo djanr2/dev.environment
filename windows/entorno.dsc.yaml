@@ -37,20 +37,3 @@ properties:
       settings:
         id: Google.Chrome
         source: winget
-
-    # --- WSL ---
-    # Usa PSDscResources/Script para correr `wsl --install` en lugar del paquete WinGet
-    # (Microsoft.WSL falla si las features de Windows aún no están habilitadas).
-    # --no-launch evita que WSL intente abrir Ubuntu e interactuar con el usuario.
-    # Si requiere reinicio, DSC termina el resto y WSL queda activo tras reiniciar.
-    - resource: PSDscResources/Script
-      id: wsl
-      directives:
-        description: Instalar WSL via wsl --install
-      settings:
-        GetScript: |
-          @{ Result = (Get-WindowsOptionalFeature -Online -FeatureName Microsoft-Windows-Subsystem-Linux).State }
-        TestScript: |
-          (Get-WindowsOptionalFeature -Online -FeatureName Microsoft-Windows-Subsystem-Linux).State -eq 'Enabled'
-        SetScript: |
-          wsl --install --no-launch

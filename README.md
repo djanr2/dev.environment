@@ -1,136 +1,122 @@
-# Entorno de desarrollo estándar — Windows + WSL
+# Standard Dev Environment — Windows + WSL
 
-## Estructura
+## Structure
 
 ```
 entorno-dev/
 ├── windows/
-│   └── entorno.dsc.yaml      # Apps que se quedan en Windows (VS Code, fuente, StarUML, navegadores, WSL)
+│   └── entorno.dsc.yaml      # Windows-side apps (VS Code, font, browsers)
 ├── wsl-nix/
-│   ├── flake.nix               # Fija nixpkgs + home-manager
-│   └── home.nix                # Todo el toolchain de WSL, dotfiles, estructura de carpetas
+│   ├── flake.nix               # Pins nixpkgs + home-manager
+│   └── home.nix                # Full WSL toolchain, dotfiles, directory structure
 └── README.md
 ```
 
-## Qué se instala
+## What gets installed
 
 ### Windows (`entorno.dsc.yaml`)
 
-| Herramienta | Descripción |
+| Tool | Description |
 |---|---|
-| Visual Studio Code | Editor principal |
-| JetBrains Mono Nerd Font | Fuente para terminal (Starship + iconos de Zellij) |
-| Brave | Navegador principal |
-| Google Chrome | Navegador secundario (testing/QA) |
-| WSL + Ubuntu | Instalado vía `wsl --install --no-launch` (puede requerir reinicio) |
+| Visual Studio Code | Main editor |
+| JetBrains Mono Nerd Font | Terminal font (Starship prompt + Zellij icons) |
+| Brave | Primary browser |
+| Google Chrome | Secondary browser (testing/QA) |
 
 ### WSL — Nix Home Manager (`home.nix`)
 
-**Editores y terminal**
-- `sublime4` — editor ligero (`subl`, GUI vía WSLg)
-- `zellij` — multiplexor de terminal
+**Editors and terminal**
+- `sublime4` — lightweight editor (`subl`, GUI via WSLg)
+- `zellij` — terminal multiplexer
 
-**Contenedores**
-- `podman` + `podman-compose` — equivalente rootless a Docker (corre directo en WSL2, sin VM extra)
+**Containers**
+- `podman` + `podman-compose` — rootless Docker equivalent (runs directly in WSL2, no extra VM)
 
-**Bases de datos**
-- `dbeaver-bin` — cliente GUI universal (vía WSLg)
-- `postgresql_16` — cliente `psql`
-- `pgcli` — cliente interactivo con autocompletado y resaltado de sintaxis
+**Databases**
+- `dbeaver-bin` — universal GUI client (via WSLg)
+- `postgresql_16` — `psql` CLI client
+- `pgcli` — interactive client with autocompletion and syntax highlighting
 
-**Gestores de versiones**
-- `mise` — Java y Node (defecto: Temurin 21 y Node 22; override por proyecto con `.mise.toml`)
-- `uv` — Python (gestión de versiones y entornos virtuales)
+**Version managers**
+- `mise` — Java and Node (defaults: Temurin 21 and Node 22; per-project override via `.mise.toml`)
+- `uv` — Python (version and virtual environment management)
 
-**IA local y CLI**
-- `ollama` — modelos de lenguaje locales
+**Local AI and CLI tools**
+- `ollama` — local language models
 - `@anthropic-ai/claude-code` *(npm)* — Claude Code CLI
 - `opencode-ai` *(npm)* — OpenCode CLI
 - `@openai/codex` *(npm)* — Codex CLI
 
-**Documentación y notas**
-- `obsidian` — vault en `~/obsidian` (GUI vía WSLg)
+**Notes and documentation**
+- `obsidian` — vault at `~/obsidian` (GUI via WSLg)
 
-**Utilidades**
-- `ripgrep`, `fzf`, `fd` — búsqueda rápida
-- `jq` — procesamiento JSON
-- `httpie` — cliente HTTP legible (`http POST api.com/...`)
-- `nmap` — scanner de red/puertos
+**Utilities**
+- `ripgrep`, `fzf`, `fd` — fast search
+- `jq` — JSON processing
+- `httpie` — readable HTTP client (`http POST api.com/...`)
+- `nmap` — network/port scanner
 - `wget`, `unzip`, `coreutils`
 
-**Shell y prompt**
-- `zsh` con aliases (`ll`, `gs`, `proj`)
-- `starship` — prompt configurable
+**Shell and prompt**
+- `zsh` with aliases (`ll`, `gs`, `proj`)
+- `starship` — configurable prompt
 
-**Estructura de directorios creada automáticamente**
+**Directory structure created automatically**
 ```
-~/projects/    # código
-~/obsidian/    # vault de Obsidian
+~/projects/    # code
+~/obsidian/    # Obsidian vault
 ~/downloads/
-~/cloude/      # punto de montaje para rclone (Google Drive, Dropbox, etc.)
+~/cloude/      # mount point for rclone (Google Drive, Dropbox, etc.)
 ```
 
 ---
 
-## Aplicar en Windows
+## Applying on Windows
+
+First install WSL (requires admin PowerShell; reboot if prompted):
+
+```powershell
+wsl --install
+```
+
+Then apply the rest of the environment:
 
 ```powershell
 winget configure --file windows\entorno.dsc.yaml --accept-configuration-agreements
 ```
 
-Esto instala VS Code, la fuente, los navegadores y WSL. Si WSL requiere reinicio, el resto del manifiesto termina igual y WSL queda activo tras reiniciar.
+## Applying on WSL (Ubuntu)
 
-## Aplicar en WSL (Ubuntu)
-
-1. Instalar Nix (si no lo tienes):
+1. Install Nix (if not already installed):
    ```bash
    sh <(curl -L https://nixos.org/nix/install) --daemon
    ```
-2. Habilitar flakes (una sola vez):
+2. Enable flakes (one time only):
    ```bash
    mkdir -p ~/.config/nix
    echo "experimental-features = nix-command flakes" >> ~/.config/nix/nix.conf
    ```
-3. Clonar este repo y aplicar:
+3. Clone this repo and apply:
    ```bash
-   git clone <tu-repo> ~/entorno-dev
+   git clone <your-repo> ~/entorno-dev
    cd ~/entorno-dev/wsl-nix
    nix run home-manager/master -- switch --flake .#tuusuario
    ```
 
-## Notas importantes antes de usar esto tal cual
+## Important notes before applying as-is
 
-- **Verifica nombres de paquetes**: nixpkgs cambia nombres de paquetes con el tiempo
-  (ej. `nerd-fonts.caskaydia-cove`, `dbeaver-bin`, `sublime4`). Antes de aplicar, corre
-  `nix search nixpkgs <paquete>` para confirmar el nombre exacto en tu revisión de nixpkgs.
-- **Claude Code, OpenCode, Codex CLI**: se instalan vía npm en el paso de activación porque
-  no siempre están empaquetados de forma estable en nixpkgs. Si en tu revisión ya existen
-  como paquetes Nix, muévelos a `home.packages` para mayor reproducibilidad.
-- **Cascadia Code Nerd Font**: instálala en ambos lados — Windows Terminal la necesita para
-  el prompt (starship) y los íconos de zellij se vean bien.
-- **Podman en WSL**: recuerda que `podman machine init` no aplica en Linux (eso es solo
-  para macOS/Windows); en WSL, Podman corre directo, rootless, sin máquina virtual extra.
-- **Git mergetool/difftool**: quedaron configurados para usar VS Code (`code --wait`) tanto
-  para merge como para diff, ya que no hay una herramienta dedicada instalada aparte.
-- **`~/cloude`**: se crea vacía como punto único de conectividad con la nube. Las subcarpetas
-  (`google/`, `dropbox/`, etc.) las agregas manualmente cuando las vayas a usar. Cuando quieras
-  que realmente sincronicen contenido, la herramienta recomendada es **rclone** (soporta Google
-  Drive, Dropbox, y decenas de proveedores más, y corre bien dentro de WSL) — avísame cuando
-  llegues a ese punto y lo agregamos.
-- **Acceso SQL por terminal**: se agregó `postgresql_16` (trae el cliente `psql`) y `pgcli`
-  (cliente interactivo con autocompletado y resaltado de sintaxis) como complemento de DBeaver.
-  El paquete `postgresql_16` incluye también el binario del servidor, pero aquí solo se usa
-  el cliente — no se levanta ningún servicio automáticamente.
-- **Obsidian en WSL**: corre vía WSLg (soporte GUI nativo de WSL2, ya incluido en Windows 11).
-  El vault vive en `~/obsidian`, dentro del filesystem de Linux — evita ponerlo en `/mnt/c/...`
-  porque cruzar el límite Windows↔WSL es notablemente más lento para I/O de archivos pequeños,
-  que es justo el patrón de uso de Obsidian. Recuerda que ya tienes Obsidian también en Windows
-  (fuera de este archivo, instalado aparte); si administras el mismo vault desde ambos lados,
-  hazlo siempre desde uno a la vez para evitar conflictos de escritura simultánea.
+- **Verify package names**: nixpkgs renames packages over time (e.g. `nerd-fonts.caskaydia-cove`, `dbeaver-bin`, `sublime4`). Before applying, run `nix search nixpkgs <package>` to confirm the exact name on your nixpkgs revision.
+- **Claude Code, OpenCode, Codex CLI**: installed via npm in the activation step because they aren't stably packaged in nixpkgs yet. If they become available as Nix packages, move them to `home.packages` for better reproducibility.
+- **Cascadia Code Nerd Font**: install on both sides — Windows Terminal needs it for the Starship prompt and Zellij icons to render correctly.
+- **Podman on WSL**: `podman machine init` does not apply on Linux (that's for macOS/Windows only); on WSL, Podman runs directly, rootless, with no extra VM.
+- **Git mergetool/difftool**: configured to use VS Code (`code --wait`) for both merge and diff, since no dedicated tool is installed.
+- **`~/cloude`**: created empty as a single cloud connectivity mount point. Add subdirectories (`google/`, `dropbox/`, etc.) manually as needed. The recommended tool for syncing is **rclone** (supports Google Drive, Dropbox, and dozens of other providers, and runs well inside WSL).
+- **SQL terminal access**: `postgresql_16` provides the `psql` client and `pgcli` adds interactive autocompletion — both complement DBeaver. The `postgresql_16` package includes the server binary but no service is started automatically.
+- **Obsidian on WSL**: runs via WSLg (native GUI support in WSL2, included in Windows 11). Keep the vault inside the Linux filesystem (`~/obsidian`) — accessing it via `/mnt/c/...` is significantly slower for small-file I/O, which is exactly Obsidian's usage pattern. If you also run Obsidian on the Windows side, only open the vault from one side at a time to avoid write conflicts.
 
-## Flujo para agregar una herramienta nueva
+## Adding a new WSL tool
 
-1. Edita `wsl-nix/home.nix` (agrega el paquete a `home.packages`).
-2. `home-manager switch --flake .`
-3. `git add . && git commit -m "agregar X" && git push`
-4. En tus otras máquinas: `git pull && home-manager switch --flake .`
+1. Add the package to `home.packages` in `wsl-nix/home.nix`.
+2. Run `home-manager switch --flake .`
+3. `git add . && git commit -m "add X" && git push`
+4. On other machines: `git pull && home-manager switch --flake .`
