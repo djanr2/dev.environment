@@ -143,6 +143,8 @@
       fish_add_path /nix/var/nix/profiles/default/bin
       fish_add_path $HOME/.nix-profile/bin
       fish_add_path $HOME/.npm-global/bin
+      set -gx DISPLAY :0
+      set -gx MOZ_ENABLE_WAYLAND 0
     '';
     shellAliases = {
       ll = "ls -la";
