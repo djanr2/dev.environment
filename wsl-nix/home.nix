@@ -47,8 +47,8 @@
     wget
     coreutils
 
-    # --- Fuente de desarrollo ---
-    nerd-fonts.caskaydia-cove  # Cascadia Code Nerd Font
+    # --- Runtime para herramientas AI CLI (npm) ---
+    nodejs_22
   ];
 
   # ---------------------------------------------------------------
@@ -61,13 +61,6 @@
   # Punto único de montaje/enlace para conectividad con la nube
   # (subcarpetas como google/, dropbox/, etc. se agregan manualmente al usarlas)
   home.file."cloude/.keep".text = "";
-
-  # ---------------------------------------------------------------
-  # Herramientas de IA que solo se distribuyen vía npm
-  # (Claude Code, OpenCode, Codex CLI no están empaquetadas en nixpkgs
-  # de forma estable todavía — se instalan como paso de activación)
-  # ---------------------------------------------------------------
-  home.packages = [ pkgs.nodejs_22 ];
 
   # Register fish in /etc/shells and set it as the login shell
   home.activation.setFishAsDefaultShell = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
