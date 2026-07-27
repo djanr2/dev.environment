@@ -91,12 +91,16 @@ winget configure --file windows\entorno.dsc.yaml --accept-configuration-agreemen
    ```bash
    sh <(curl -L https://nixos.org/nix/install) --daemon
    ```
-2. Enable flakes (one time only):
+2. Restart WSL so the Nix daemon is available. Run this from PowerShell on Windows, then reopen your WSL terminal:
+   ```powershell
+   wsl --shutdown
+   ```
+3. Enable flakes (one time only):
    ```bash
    mkdir -p ~/.config/nix
    echo "experimental-features = nix-command flakes" >> ~/.config/nix/nix.conf
    ```
-3. Clone this repo and apply:
+4. Clone this repo and apply:
    ```bash
    git clone <your-repo> ~/entorno-dev
    cd ~/entorno-dev/wsl-nix
