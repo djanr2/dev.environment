@@ -26,6 +26,7 @@
 
     # --- Control de versiones ---
     git
+    home-manager
 
     # --- Gestores de versión ---
     mise                      # Java, Node (y otros)
