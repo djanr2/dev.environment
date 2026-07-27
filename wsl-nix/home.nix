@@ -33,7 +33,7 @@
     uv                         # Python
 
     # --- Navegadores ---
-    google-chrome
+    firefox
 
     # --- IA local ---
     ollama
