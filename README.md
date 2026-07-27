@@ -112,9 +112,9 @@ winget configure --file windows\entorno.dsc.yaml --accept-configuration-agreemen
    ```powershell
    wsl --shutdown
    ```
-   > **First restart only:** if `home-manager` is still not found after restarting, run it once via full path to apply the fish PATH fix:
+   > **First restart only:** if `home-manager` is still not found after restarting, use `nix run` once more to apply the fish PATH fix:
    > ```bash
-   > ~/.nix-profile/bin/home-manager switch --flake ~/dev.environment/wsl-nix#dev-environment
+   > nix run home-manager/release-24.05 -- switch --flake ~/dev.environment/wsl-nix#dev-environment
    > ```
    > Then restart WSL again — from that point on `home-manager` will be available normally.
 
@@ -145,7 +145,30 @@ home-manager switch --flake ~/dev.environment/wsl-nix#dev-environment
 
 ## Adding a new WSL tool
 
-1. Add the package to `home.packages` in `wsl-nix/home.nix`.
-2. Run `home-manager switch --flake .`
-3. `git add . && git commit -m "add X" && git push`
-4. On other machines: `git pull && home-manager switch --flake .`
+**1. Find the exact package name:**
+```bash
+nix search nixpkgs <package-name>
+```
+
+**2. Edit `wsl-nix/home.nix`** and add the package to the `home.packages` list:
+```nix
+home.packages = with pkgs; [
+  ...
+  your-package   # add it here
+];
+```
+
+**3. Apply the change:**
+```bash
+home-manager switch --flake ~/dev.environment/wsl-nix#dev-environment
+```
+
+**4. Commit and push so other machines stay in sync:**
+```bash
+git add . && git commit -m "add <package>" && git push
+```
+
+**5. On other machines:**
+```bash
+git pull && home-manager switch --flake ~/dev.environment/wsl-nix#dev-environment
+```
