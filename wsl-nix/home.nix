@@ -51,9 +51,7 @@
     unzip
     wget
     coreutils
-
-    # --- Runtime para herramientas AI CLI (npm) ---
-    nodejs_24
+    gawk                        # requerido por mise para instalar Python (python-build)
   ];
 
   # ---------------------------------------------------------------
@@ -78,8 +76,16 @@
     fi
   '';
 
-  home.activation.installAiCliTools = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
-    export PATH="${pkgs.nodejs_24}/bin:$PATH"
+  # mise's config file (.config/mise/config.toml) is only symlinked into place
+  # during linkGeneration, so tool installs must run after that, not after
+  # writeBoundary like a plain package would.
+  home.activation.installMiseTools = lib.hm.dag.entryAfter [ "linkGeneration" ] ''
+    export PATH="${pkgs.mise}/bin:$PATH"
+    mise install
+  '';
+
+  home.activation.installAiCliTools = lib.hm.dag.entryAfter [ "installMiseTools" ] ''
+    export PATH="$(${pkgs.mise}/bin/mise where node)/bin:$PATH"
     npm install -g --prefix "$HOME/.npm-global" \
       @anthropic-ai/claude-code \
       opencode-ai \
@@ -111,6 +117,7 @@
     [tools]
     java = "temurin-21"
     node = "24"
+    python = "3.13.7"
 
     [settings]
     experimental = true
@@ -130,6 +137,9 @@
   # ---------------------------------------------------------------
   programs.zsh = {
     enable = true;
+    initContent = ''
+      eval "$(${pkgs.mise}/bin/mise activate zsh)"
+    '';
     shellAliases = {
       ll = "ls -la";
       gs = "git status";
@@ -145,6 +155,7 @@
       fish_add_path $HOME/.npm-global/bin
       set -gx DISPLAY :0
       set -gx MOZ_ENABLE_WAYLAND 0
+      mise activate fish | source
     '';
     shellAliases = {
       ll = "ls -la";
