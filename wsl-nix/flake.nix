@@ -17,7 +17,7 @@
         config.allowUnfree = true; # necesario para DBeaver, Sublime, etc.
       };
     in {
-      homeConfigurations."djanr2" = home-manager.lib.homeManagerConfiguration {
+      homeConfigurations."tuusuario" = home-manager.lib.homeManagerConfiguration {
         inherit pkgs;
         modules = [ ./home.nix ];
       };

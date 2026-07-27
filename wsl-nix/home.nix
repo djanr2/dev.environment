@@ -1,8 +1,8 @@
 { pkgs, lib, ... }:
 {
   home.stateVersion = "24.05";
-  home.username = "djanr2";
-  home.homeDirectory = "/home/djanr2";
+  home.username = "tuusuario";
+  home.homeDirectory = "/home/tuusuario";
 
   # ---------------------------------------------------------------
   # Paquetes base del ambiente
@@ -20,6 +20,8 @@
 
     # --- Base de datos ---
     dbeaver-bin
+    postgresql_16              # incluye el cliente `psql`
+    pgcli                       # cliente interactivo con autocompletado
 
     # --- Control de versiones ---
     git
@@ -31,25 +33,22 @@
     # --- IA local ---
     ollama
 
+    # --- Documentación ---
+    obsidian                    # gestiona los .md directamente desde Linux (vault en ~/obsidian)
+
     # --- Utilidades generales ---
     ripgrep
     fzf
     fd
+    nmap                          # scanner de puertos / descubrimiento de red
     jq
+    httpie                      # cliente HTTP legible: http POST api.com/users name=Juan
     unzip
     wget
     coreutils
 
     # --- Fuente de desarrollo ---
-    # Hack Nerd Font — la misma que ya usas en Windows con starship.
-    # nerd-fonts.caskaydia-cove/hack no existen como paquetes separados en
-    # nixos-24.05 (esa reestructuración llegó a nixpkgs a mediados de 2025);
-    # en esta revisión es el monolítico `nerdfonts` con override de fuentes.
-    # "Hack" verificado en pkgs/data/fonts/nerdfonts/shas.nix de nixos-24.05.
-    (nerdfonts.override { fonts = [ "Hack" ]; })
-
-    # --- Node (runtime para herramientas de IA vía npm, ver activation abajo) ---
-    nodejs_22
+    nerd-fonts.caskaydia-cove  # Cascadia Code Nerd Font
   ];
 
   # ---------------------------------------------------------------
@@ -68,6 +67,8 @@
   # (Claude Code, OpenCode, Codex CLI no están empaquetadas en nixpkgs
   # de forma estable todavía — se instalan como paso de activación)
   # ---------------------------------------------------------------
+  home.packages = [ pkgs.nodejs_22 ];
+
   home.activation.installAiCliTools = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
     export PATH="${pkgs.nodejs_22}/bin:$PATH"
     npm install -g --prefix "$HOME/.npm-global" \
@@ -83,8 +84,8 @@
   # ---------------------------------------------------------------
   programs.git = {
     enable = true;
-    userName = "Juan Alfredo Nunez Rodriguez";
-    userEmail = "djanr2@gmail.com";
+    userName = "Tu Nombre";
+    userEmail = "tu@email.com";
     extraConfig = {
       init.defaultBranch = "main";
       merge.tool = "vscode";
