@@ -105,22 +105,21 @@ winget configure --file windows\entorno.dsc.yaml --accept-configuration-agreemen
 4. Clone this repo and apply:
    ```bash
    git clone https://github.com/djanr2/dev.environment.git ~/dev.environment
-   cd ~/dev.environment/wsl-nix
-   nix run home-manager/release-24.05 -- switch --flake .#dev-environment
+   nix run home-manager/release-24.05 -- switch --flake ~/dev.environment/wsl-nix#dev-environment
    ```
 
 ## Keeping packages up to date
 
-Run this from `~/dev.environment/wsl-nix` to update all Nix inputs (nixpkgs, home-manager) to their latest versions:
+Run this to update all Nix inputs (nixpkgs, home-manager) to their latest versions:
 
 ```bash
-nix flake update
+nix flake update --flake ~/dev.environment/wsl-nix
 ```
 
 Then re-apply to pick up the changes:
 
 ```bash
-home-manager switch --flake .#dev-environment
+home-manager switch --flake ~/dev.environment/wsl-nix#dev-environment
 ```
 
 ## Important notes before applying as-is
