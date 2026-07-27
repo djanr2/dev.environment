@@ -69,6 +69,17 @@
   # ---------------------------------------------------------------
   home.packages = [ pkgs.nodejs_22 ];
 
+  # Register fish in /etc/shells and set it as the login shell
+  home.activation.setFishAsDefaultShell = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
+    FISH="${pkgs.fish}/bin/fish"
+    if ! grep -qF "$FISH" /etc/shells 2>/dev/null; then
+      echo "$FISH" | sudo tee -a /etc/shells >/dev/null
+    fi
+    if [ "$SHELL" != "$FISH" ]; then
+      sudo chsh -s "$FISH" "$USER"
+    fi
+  '';
+
   home.activation.installAiCliTools = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
     export PATH="${pkgs.nodejs_22}/bin:$PATH"
     npm install -g --prefix "$HOME/.npm-global" \
@@ -112,7 +123,7 @@
   # ---------------------------------------------------------------
   home.file.".config/zellij/config.kdl".text = ''
     theme "default"
-    default_shell "zsh"
+    default_shell "fish"
     pane_frames true
   '';
 
@@ -126,6 +137,20 @@
       gs = "git status";
       proj = "cd ~/projects";
     };
+  };
+
+  programs.fish = {
+    enable = true;
+    shellAliases = {
+      ll = "ls -la";
+      gs = "git status";
+      proj = "cd ~/projects";
+    };
+  };
+
+  # Atuin replaces Ctrl+R with a searchable, syncable command history
+  programs.atuin = {
+    enable = true;
   };
 
   programs.starship.enable = true; # prompt, combina bien con la Nerd Font
