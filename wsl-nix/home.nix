@@ -1,8 +1,8 @@
 { pkgs, lib, ... }:
 {
   home.stateVersion = "24.05";
-  home.username = "tuusuario";
-  home.homeDirectory = "/home/tuusuario";
+  home.username = "djanr2";
+  home.homeDirectory = "/home/djanr2";
 
   # ---------------------------------------------------------------
   # Paquetes base del ambiente
