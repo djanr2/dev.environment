@@ -112,6 +112,11 @@ winget configure --file windows\entorno.dsc.yaml --accept-configuration-agreemen
    ```powershell
    wsl --shutdown
    ```
+   > **First restart only:** if `home-manager` is still not found after restarting, run it once via full path to apply the fish PATH fix:
+   > ```bash
+   > ~/.nix-profile/bin/home-manager switch --flake ~/dev.environment/wsl-nix#dev-environment
+   > ```
+   > Then restart WSL again — from that point on `home-manager` will be available normally.
 
 ## Keeping packages up to date
 

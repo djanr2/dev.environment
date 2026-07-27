@@ -135,6 +135,11 @@
 
   programs.fish = {
     enable = true;
+    shellInit = ''
+      fish_add_path /nix/var/nix/profiles/default/bin
+      fish_add_path $HOME/.nix-profile/bin
+      fish_add_path $HOME/.npm-global/bin
+    '';
     shellAliases = {
       ll = "ls -la";
       gs = "git status";
