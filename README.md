@@ -22,7 +22,7 @@ entorno-dev/
 | JetBrains Mono Nerd Font | Fuente para terminal (Starship + iconos de Zellij) |
 | Brave | Navegador principal |
 | Google Chrome | Navegador secundario (testing/QA) |
-| WSL | Subsistema Linux para Windows |
+| WSL + Ubuntu | Instalado vía `wsl --install --no-launch` (puede requerir reinicio) |
 
 ### WSL — Nix Home Manager (`home.nix`)
 
@@ -78,7 +78,7 @@ entorno-dev/
 winget configure --file windows\entorno.dsc.yaml --accept-configuration-agreements
 ```
 
-Esto instala VS Code, la fuente, StarUML, Brave/Chrome, y habilita WSL.
+Esto instala VS Code, la fuente, los navegadores y WSL. Si WSL requiere reinicio, el resto del manifiesto termina igual y WSL queda activo tras reiniciar.
 
 ## Aplicar en WSL (Ubuntu)
 
