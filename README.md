@@ -102,8 +102,8 @@ winget configure --file windows\entorno.dsc.yaml --accept-configuration-agreemen
    ```
 4. Clone this repo and apply:
    ```bash
-   git clone <your-repo> ~/entorno-dev
-   cd ~/entorno-dev/wsl-nix
+   git clone git@github.com:djanr2/dev.environment.git ~/dev.environment
+   cd ~/dev.environment/wsl-nix
    nix run home-manager/master -- switch --flake .#tuusuario
    ```
 
