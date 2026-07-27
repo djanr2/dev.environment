@@ -108,6 +108,10 @@ winget configure --file windows\entorno.dsc.yaml --accept-configuration-agreemen
    git clone https://github.com/djanr2/dev.environment.git ~/dev.environment
    nix run home-manager/release-24.05 -- switch --flake ~/dev.environment/wsl-nix#dev-environment
    ```
+5. Restart WSL to pick up the new PATH and activate fish as the default shell. Run from PowerShell on Windows, then reopen your WSL terminal:
+   ```powershell
+   wsl --shutdown
+   ```
 
 ## Keeping packages up to date
 
