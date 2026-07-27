@@ -106,7 +106,7 @@ winget configure --file windows\entorno.dsc.yaml --accept-configuration-agreemen
    ```bash
    git clone https://github.com/djanr2/dev.environment.git ~/dev.environment
    cd ~/dev.environment/wsl-nix
-   nix run home-manager/master -- switch --flake .#dev-environment
+   nix run home-manager/release-24.05 -- switch --flake .#dev-environment
    ```
 
 ## Keeping packages up to date
