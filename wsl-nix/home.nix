@@ -31,6 +31,9 @@
     mise                      # Java, Node (y otros)
     uv                         # Python
 
+    # --- Navegadores ---
+    google-chrome
+
     # --- IA local ---
     ollama
 
