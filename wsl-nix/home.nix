@@ -101,6 +101,17 @@
     enable = true;
     userName = "Tu Nombre";
     userEmail = "tu@email.com";
+    aliases = {
+      st = "status";
+      co = "checkout";
+      br = "branch";
+      ci = "commit";
+      df = "diff";
+      lg = "log --oneline --graph --decorate";
+      last = "log -1 HEAD";
+      unstage = "restore --staged";
+      amend = "commit --amend --no-edit";
+    };
     extraConfig = {
       init.defaultBranch = "main";
       merge.tool = "vscode";
