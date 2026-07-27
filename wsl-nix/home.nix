@@ -53,7 +53,7 @@
     coreutils
 
     # --- Runtime para herramientas AI CLI (npm) ---
-    nodejs_22
+    nodejs_24
   ];
 
   # ---------------------------------------------------------------
@@ -79,7 +79,7 @@
   '';
 
   home.activation.installAiCliTools = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
-    export PATH="${pkgs.nodejs_22}/bin:$PATH"
+    export PATH="${pkgs.nodejs_24}/bin:$PATH"
     npm install -g --prefix "$HOME/.npm-global" \
       @anthropic-ai/claude-code \
       opencode-ai \
@@ -110,7 +110,7 @@
   home.file.".config/mise/config.toml".text = ''
     [tools]
     java = "temurin-21"
-    node = "22"
+    node = "24"
 
     [settings]
     experimental = true
