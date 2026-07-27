@@ -26,7 +26,8 @@ entorno-dev/
 ### WSL — Nix Home Manager (`home.nix`)
 
 **Editors and terminal**
-- `sublime4` — lightweight editor (`subl`, GUI via WSLg)
+- `helix` — modern terminal editor with built-in LSP and tree-sitter syntax highlighting (`hx`); no extra config needed
+- `openssl` — OpenSSL 3.x (current supported LTS; used by other tools in the environment)
 - `zellij` — terminal multiplexer
 
 **Containers**

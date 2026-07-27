@@ -14,7 +14,7 @@
       system = "x86_64-linux";
       pkgs = import nixpkgs {
         inherit system;
-        config.allowUnfree = true; # necesario para DBeaver, Sublime, etc.
+        config.allowUnfree = true;
       };
     in {
       homeConfigurations."dev-environment" = home-manager.lib.homeManagerConfiguration {

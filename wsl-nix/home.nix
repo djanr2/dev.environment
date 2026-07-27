@@ -9,7 +9,8 @@
   # ---------------------------------------------------------------
   home.packages = with pkgs; [
     # --- Editor ligero ---
-    sublime4                # `subl archivo.txt` desde terminal (GUI vía WSLg)
+    helix       # editor moderno en terminal: LSP + treesitter incluidos, sin configuración extra
+    openssl     # OpenSSL 3.x (versión activa con soporte de seguridad)
 
     # --- Terminal / multiplexor ---
     zellij
