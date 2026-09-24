@@ -92,15 +92,26 @@
       @openai/codex
   '';
 
-  home.sessionPath = [ "$HOME/.npm-global/bin" ];
+  # Google Antigravity CLI: instalador oficial (no está en nixpkgs todavía).
+  # Se usa el binario "legacy" propio de Google en vez del paquete de nixpkgs
+  # porque el login/credenciales de la cuenta Google están atados a ese build.
+  home.activation.installAntigravityCli = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
+    if [ ! -x "$HOME/.local/bin/agy" ]; then
+      ${pkgs.curl}/bin/curl -fsSL https://antigravity.google/cli/install.sh | \
+        PATH="${pkgs.curl}/bin:${pkgs.wget}/bin:${pkgs.gnutar}/bin:${pkgs.gzip}/bin:${pkgs.gnugrep}/bin:${pkgs.coreutils}/bin:$PATH" \
+        ${pkgs.bash}/bin/bash
+    fi
+  '';
+
+  home.sessionPath = [ "$HOME/.npm-global/bin" "$HOME/.local/bin" ];
 
   # ---------------------------------------------------------------
   # Git
   # ---------------------------------------------------------------
   programs.git = {
     enable = true;
-    userName = "Tu Nombre";
-    userEmail = "tu@email.com";
+    userName = "djanr2";
+    userEmail = "djanr2@gmail.com";
     aliases = {
       st = "status";
       co = "checkout";
